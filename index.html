@@ -9,16 +9,16 @@
     font-family: "Comic Sans MS", cursive, sans-serif;
     background: #fce4ec;
     overflow-x: hidden;
-    perspective: 1000px; /* perspectiva para 3D */
+    perspective: 1200px; /* Ajustamos la perspectiva 3D */
   }
 
-  /* 🌈 Fondo LEGO 3D tipo muro */
+  /* Fondo LEGO 3D con más bloques */
   .lego-wall {
     position: absolute;
     top: 0;
     left: 50%;
     transform: translateX(-50%) rotateX(15deg);
-    width: 700px;
+    width: 100%;
     height: 100%;
     display: flex;
     flex-wrap: wrap;
@@ -35,6 +35,7 @@
     position: relative;
     box-shadow: 0 5px 0 rgba(0,0,0,0.3), inset 0 -2px 2px rgba(255,255,255,0.3);
     transform-style: preserve-3d;
+    animation: floatBlocks 10s linear infinite;
   }
 
   .lego-block::before {
@@ -49,7 +50,13 @@
     box-shadow: 18px 0 rgba(255,255,255,0.7), 36px 0 rgba(255,255,255,0.7);
   }
 
-  /* Tarjeta LEGO 3D */
+  @keyframes floatBlocks {
+    0% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(15deg); }
+    100% { transform: translateY(0) rotate(0deg); }
+  }
+
+  /* 🌟 Tarjeta LEGO 3D */
   .card-container {
     position: relative;
     max-width: 500px;
@@ -145,16 +152,17 @@
 <script>
 const colors = ['#ff4d6d','#ff6f91','#ffb6c1','#ff69b4','#ffd700','#ffa500'];
 
-// Generar muro LEGO 3D
+// Generar muro LEGO 3D con más bloques
 function generarMuro() {
   const wall = document.getElementById('legoWall');
-  for(let i=0;i<140;i++){
+  for(let i=0; i<300; i++) {
     const block = document.createElement('div');
-    block.className='lego-block';
-    const c1=colors[Math.floor(Math.random()*colors.length)];
-    const c2=colors[Math.floor(Math.random()*colors.length)];
-    block.style.background=`linear-gradient(to bottom, ${c1}, ${c2})`;
-    block.style.transform=`rotateX(${Math.random()*10}deg) rotateY(${Math.random()*10}deg)`;
+    block.className = 'lego-block';
+    const c1 = colors[Math.floor(Math.random() * colors.length)];
+    const c2 = colors[Math.floor(Math.random() * colors.length)];
+    block.style.background = `linear-gradient(to bottom, ${c1}, ${c2})`;
+    block.style.transform = `rotateX(${Math.random() * 15}deg) rotateY(${Math.random() * 15}deg)`;
+    block.style.animationDelay = `${Math.random() * 5}s`;
     wall.appendChild(block);
   }
 }
@@ -194,43 +202,43 @@ function nextStep(step) {
   clickSound.play();
   setTimeout(()=>{ game.style.animation=""; },500);
 
-  if (step===1){
-    game.innerHTML=`<h1>Pregunta 1 💭</h1>
+  if (step === 1) {
+    game.innerHTML = `<h1>Pregunta 1 💭</h1>
     <p>¿Dónde fue nuestra primera cita?</p>
     <button onclick="correcta(2)">En Waffles and Coffee</button>
     <button onclick="incorrecta()">En Al Súper 🛒</button>`;
   }
 
-  if (step===2){
-    game.innerHTML=`<h1>Pregunta 2 💗</h1>
+  if (step === 2) {
+    game.innerHTML = `<h1>Pregunta 2 💗</h1>
     <p>¿Me seguirías amando si un día me convierto en una cebolla?</p>
-    <button onclick="incorrecta()">No, que asco mejor nadota</button>
+    <button onclick="incorrecta()">No, que asco mejor nada</button>
     <button onclick="correcta(3)">Ooooobvio que si 💕</button>`;
   }
 
-  if (step===3){
-    game.innerHTML=`<h1>Última pregunta 💘</h1>
+  if (step === 3) {
+    game.innerHTML = `<h1>Última pregunta 💘</h1>
     <p>Esta sí es MUY importante…</p>
     <h2>¿Quieres ser mi San Valentín? 🌹</h2>
     <button id="yesButton">SÍ 💞</button>
-    <button id="noButton">NOP</button>`;
+    <button id="noButton">NO 😳</button>`;
 
-    const yesBtn=document.getElementById('yesButton');
-    yesBtn.addEventListener('click',()=> {
+    const yesBtn = document.getElementById('yesButton');
+    yesBtn.addEventListener('click', () => {
       document.getElementById('correctSound').play();
       lanzarConfeti();
       mostrarPopup("💖 SABÍA QUE DIRÍAS QUE SÍ, TE AMOOO 💖", true);
     });
 
-    const noBtn=document.getElementById('noButton');
-    noBtn.addEventListener('mousemove',()=> {
-      const x=Math.random()*300;
-      const y=Math.random()*100;
-      noBtn.style.transform=`translate(${x}px, ${y}px) scale(1.1)`;
-      noBtn.style.transition="transform 0.1s";
-      setTimeout(()=>{ noBtn.style.transform=`translate(${x}px, ${y}px) scale(1)`; },100);
+    const noBtn = document.getElementById('noButton');
+    noBtn.addEventListener('mousemove', () => {
+      const x = Math.random() * 300;
+      const y = Math.random() * 100;
+      noBtn.style.transform = `translate(${x}px, ${y}px) scale(1.1)`;
+      noBtn.style.transition = "transform 0.1s";
+      setTimeout(() => { noBtn.style.transform = `translate(${x}px, ${y}px) scale(1)`; }, 100);
     });
-    noBtn.addEventListener('click',()=>{ mostrarPopup("no puedes decir que no!", false); });
+    noBtn.addEventListener('click', () => { mostrarPopup("no puedes decir que no!", false); });
   }
 }
 </script>
